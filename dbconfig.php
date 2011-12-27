@@ -1,11 +1,12 @@
 <?php
+//error_reporting(-1);
 session_start();
 $dbhost = 'localhost';
 $dbuser   = 'whampoa_maysam';
 $dbpassword = 'torabi';
 $database = 'whampoa_expenses';
 $db = mysql_connect($dbhost, $dbuser, $dbpassword) or die("Connection Error: " . mysql_error()); 
-mysql_select_db($database) or die("Error connecting to db."); 
+mysql_select_db($database, $db) or die("Error connecting to db."); 
 function file_get_contents_curl($url) {
 	$url = 'http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['REQUEST_URI'].'.php').'/'.$url;
 

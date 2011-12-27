@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui-1.8.2.custom.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
 
+<link rel="icon"       type="image/png"       href="favicon.ico">
 <script src="js/jquery-1.5.2.min.js" type="text/javascript"></script>
 <script src="js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>
 
