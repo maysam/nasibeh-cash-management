@@ -62,6 +62,15 @@
 <table id="list"></table> 
 <div id="pager"></div> 
 	<script>
+		$.ui.autocomplete.prototype._renderItem = function( ul, item){
+  var term = this.term.split(' ').join('|');
+  var re = new RegExp("(" + term + ")", "gi") ;
+  var t = item.label.replace(re,"<b>$1</b>");
+  return $( "<li></li>" )
+     .data( "item.autocomplete", item )
+     .append( "<a>" + t + "</a>" )
+     .appendTo( ul );
+};
 $(document).ready(function(){
 		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
 		 
@@ -102,7 +111,7 @@ $(document).ready(function(){
 				$( "#expense-form" ).dialog( "open" );
 			});
 				$( "#datepicker" ).datepicker( {"dateFormat" : 'yy-mm-dd'} );
-				$( "#amount" ).autocomplete({source: 'autocomplete.php?table=payment&field=amount'}, {highlight: true});
+				$( "#amount" ).autocomplete({source: 'autocomplete.php?table=payment&field=amount', highlight: true});
 				$( "#cause" ).autocomplete({ source: 'autocomplete.php?table=payment&field=cause'});
 				$( "#place" ).autocomplete({ source: 'autocomplete.php?table=payment&field=place'});
 				$( "#note" ).autocomplete({ source: 'autocomplete.php?table=payment&field=note'});
