@@ -102,13 +102,13 @@ $(document).ready(function(){
 				$( "#expense-form" ).dialog( "open" );
 			});
 				$( "#datepicker" ).datepicker( {"dateFormat" : 'yy-mm-dd'} );
-				$( "#amount" ).autocomplete({ source: [ <?=file_get_contents_curl('autocomplete.php?table=payment&field=amount')?>]	});
-				$( "#cause" ).autocomplete({ source: [ <?=file_get_contents_curl('autocomplete.php?table=payment&field=cause')?>]	});
-				$( "#place" ).autocomplete({ source: [ <?=file_get_contents_curl('autocomplete.php?table=payment&field=place')?>]	});
-				$( "#note" ).autocomplete({ source: [ <?=file_get_contents_curl('autocomplete.php?table=payment&field=note')?>]	});
-				$( "#currency" ).autocomplete({ source: [ <?=file_get_contents_curl('autocomplete.php?table=payment&field=currency')?>]	});
-				$( "#by" ).autocomplete({ source: [ <?=file_get_contents_curl('autocomplete.php?table=payment&field=by')?>]	});
-				$( "#for" ).autocomplete({ source: [ <?=file_get_contents_curl('autocomplete.php?table=payment&field=for')?>]	});
+				$( "#amount" ).autocomplete({source: 'autocomplete.php?table=payment&field=amount'}, {highlight: true});
+				$( "#cause" ).autocomplete({ source: 'autocomplete.php?table=payment&field=cause'});
+				$( "#place" ).autocomplete({ source: 'autocomplete.php?table=payment&field=place'});
+				$( "#note" ).autocomplete({ source: 'autocomplete.php?table=payment&field=note'});
+				$( "#currency" ).autocomplete({ source: 'autocomplete.php?table=payment&field=currency'});
+				$( "#by" ).autocomplete({ source: 'autocomplete.php?table=payment&field=by'});
+				$( "#for" ).autocomplete({ source: 'autocomplete.php?table=payment&field=for'});
 
 
   $("#list").jqGrid({
