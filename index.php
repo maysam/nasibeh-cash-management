@@ -22,7 +22,7 @@
 	$.jgrid.useJSON = true;
 </script>
 <script src="js/ui.multiselect.js" type="text/javascript"></script>
-<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="jqGrid/jquery.jqGrid.js" type="text/javascript"></script>
 <script src="js/jquery.tablednd.js" type="text/javascript"></script>
 <script src="js/jquery.contextmenu.js" type="text/javascript"></script>
 
@@ -70,7 +70,7 @@
      .data( "item.autocomplete", item )
      .append( "<a>" + t + "</a>" )
      .appendTo( ul );
-};
+		};
 $(document).ready(function(){
 		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
 		 
@@ -82,20 +82,14 @@ $(document).ready(function(){
 			modal: true,
 			buttons: {
 				"Add Expense": function() {
-      				$.post('add.php?add=true', $( "#expense-form-html" ).serialize()
-      				, function(data) {
-		//		$( "#datepicker" ).val('');
-				$( "#amount" ).val('');
-				$( "#cause" ).val('');
-				$( "#place" ).val('');
-				$( "#note" ).val('');
-//				$( "#currency" ).val('');
-	//			$( "#by" ).val('');
-		//		$( "#for" ).val('');
-				$( "#expense-form" ).dialog( "close" );
-       				$("#list").trigger("reloadGrid");
-       				//window.location = 'http://expenses.babataher.com/';
-                      });
+      		$.post('add.php?add=true', $( "#expense-form-html" ).serialize(), function(data) {
+						$( "#amount" ).val('');
+						$( "#cause" ).val('');
+						$( "#place" ).val('');
+						$( "#note" ).val('');
+						$( "#expense-form" ).dialog( "close" );
+		      	$("#list").trigger("reloadGrid");
+          });
 				},
 				Cancel: function() {
 					$( this ).dialog( "close" );
@@ -103,7 +97,7 @@ $(document).ready(function(){
 			},
 			close: function() {
 			}
-		}).dialog( "open" );
+		});//.dialog( "open" );
 
 		$( "#add-expense" )
 			.button()
@@ -111,7 +105,7 @@ $(document).ready(function(){
 				$( "#expense-form" ).dialog( "open" );
 			});
 				$( "#datepicker" ).datepicker( {"dateFormat" : 'yy-mm-dd'} );
-				$( "#amount" ).autocomplete({source: 'autocomplete.php?table=payment&field=amount', highlight: true});
+				$( "#amount" ).autocomplete({source: 'autocomplete.php?table=payment&field=amount'});
 				$( "#cause" ).autocomplete({ source: 'autocomplete.php?table=payment&field=cause'});
 				$( "#place" ).autocomplete({ source: 'autocomplete.php?table=payment&field=place'});
 				$( "#note" ).autocomplete({ source: 'autocomplete.php?table=payment&field=note'});
@@ -119,35 +113,37 @@ $(document).ready(function(){
 				$( "#by" ).autocomplete({ source: 'autocomplete.php?table=payment&field=by'});
 				$( "#for" ).autocomplete({ source: 'autocomplete.php?table=payment&field=for'});
 
-
+	var lastsel2;
   $("#list").jqGrid({
-    url:'payment.php',
-    editurl:'payment.php',
+    url:'payment.php', 
+		cellEdit : true,
+		cellsubmit : 'remote',
+		cellurl: 'action.php',
+		editurl: 'action.php',
     datatype: 'xml',
     mtype: 'GET',
     colNames:['ID','Date', 'Amount','Currency', 'Reason', 'Place', 'Notes', 'by', 'for'],
     colModel :[ 
-      {name:'id', index:'id', width:55}, 
-      {name:'date', index:'date', width:90}, 
-      {name:'amount', index:'amount', width:80, align:'right'}, 
-      {name:'currency', index:'currency', width:80, align:'right'}, 
-      {name:'cause', index:'cause', width:80, align:'right'}, 
-      {name:'place', index:'place', width:80, align:'right'}, 
-      {name:'note', index:'note', width:150, sortable:false},
-      {name:'by', index:'by', width:150, sortable:false},
-      {name:'for', index:'for', width:150, sortable:false},
+      {name:'id', index:'id', width:55, PrimaryKey:true}, 
+      {name:'date', index:'date', width:90, editable:true, editoptions:{ dataInit:function (elem) { $(elem).datepicker(); } }}, 
+      {name:'amount', index:'amount', width:80, align:'right', editable:true}, 
+      {name:'currency', index:'currency', width:80, align:'right', editable:true, edittype:"select", editoptions:{value:'SGD:MYR'}}, 
+      {name:'cause', index:'cause', width:80, align:'right', editable:true}, 
+      {name:'place', index:'place', width:80, align:'right', editable:true}, 
+      {name:'note', index:'note', width:150, sortable:false, editable:true},
+      {name:'by', index:'by', width:150, sortable:false, editable:true},
+      {name:'for', index:'for', width:150, sortable:false, editable:true},
     ],
     pager: '#pager',
     rowNum:20,
-	height:600,
-	width:600,
-    rowList:[10,20,30],
+		height:500,
+		width:600,
+    rowList:[10,20,50],
     sortname: 'date',
     sortorder: 'desc',
     caption: 'My expenses',
     viewrecords: true,
-  });
-    $("#list").jqGrid('navGrid', '#pager',{edit:true,add:false,del:true}); 
+  }).jqGrid('navGrid', '#pager',{edit:true,add:false,del:true}); 
 }); 
 </script>
  </body>
