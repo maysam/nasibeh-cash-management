@@ -1,10 +1,12 @@
 <?
 	if(isset($_REQUEST['oper'])) {
+		include("dbconfig.php");
 		$oper = $_REQUEST['oper'];
 		$id = $_REQUEST['id'];
 		if($oper == 'del')
 		{
 			$sql = "delete from payment where id=$id";
+			mysql_query($sql);
 		}
 		elseif($oper == 'edit')
 		{
@@ -13,14 +15,9 @@
 			{
 				
 				$sql = "update payment set $key='$value' where id=$id limit 1";
-				break;
+				mysql_query($sql);
+				//break;
 			}
-		}
-		if(isset($sql))
-		{
-			include("dbconfig.php");
-			mysql_query($sql);
-		//	die($sql);
 		}
 	}
 ?>

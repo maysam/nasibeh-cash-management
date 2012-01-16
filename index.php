@@ -12,7 +12,9 @@
 <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
 
 <link rel="icon"       type="image/png"       href="favicon.ico">
-<script src="js/jquery-1.5.2.min.js" type="text/javascript"></script>
+<!-- script src="js/jquery-1.5.2.min.js" type="text/javascript"></script -->
+<script src="js/jquery/dist/jquery.js" type="text/javascript"></script>
+
 <script src="js/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>
 
 <script src="js/jquery.layout.js" type="text/javascript"></script>
@@ -113,10 +115,10 @@ $(document).ready(function(){
 				$( "#by" ).autocomplete({ source: 'autocomplete.php?table=payment&field=by'});
 				$( "#for" ).autocomplete({ source: 'autocomplete.php?table=payment&field=for'});
 
-	var lastsel2;
+	var lastSel=0;
   $("#list").jqGrid({
     url:'payment.php', 
-		cellEdit : true,
+		cellEdit : false,
 		cellsubmit : 'remote',
 		cellurl: 'action.php',
 		editurl: 'action.php',
@@ -136,13 +138,36 @@ $(document).ready(function(){
     ],
     pager: '#pager',
     rowNum:20,
-		height:500,
-		width:600,
+	height:500,
+	width:600,
     rowList:[10,20,50],
     sortname: 'date',
     sortorder: 'desc',
     caption: 'My expenses',
     viewrecords: true,
+	loadComplete: function(data){
+		if(typeof data == 'undefined')
+        $.each(data.rows,function(i,item){
+            //if(data.rows[i]s>0)
+            {
+//                $("#" + data.rows[i].id).find("td").eq(4).css("color", "red");
+            }
+        });
+      },
+        ondblClickRow: function(id, ri, ci) {
+            // edit the row and save it on press "enter" key
+            $("#list").jqGrid('editRow',id,true);
+    },
+    onSelectRow: function(id) {
+        if (id && id !== lastSel) {
+            // cancel editing of the previous selected row if it was in editing state.
+            // jqGrid hold intern savedRow array inside of jqGrid object,
+            // so it is safe to call restoreRow method with any id parameter
+            // if jqGrid not in editing state
+            $("#list").jqGrid('restoreRow',lastSel);
+            lastSel = id;
+        }
+    },
   }).jqGrid('navGrid', '#pager',{edit:true,add:false,del:true}); 
 }); 
 </script>
