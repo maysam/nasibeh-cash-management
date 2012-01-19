@@ -62,7 +62,12 @@
 </div>
 <button id="add-expense">Add Expense</button>
 <table id="list"></table> 
-<div id="pager"></div> 
+<div id="pager"></div>
+<style>
+.new_date {
+    background-color: lightblue !important;
+}
+</style> 
 	<script>
 		$.ui.autocomplete.prototype._renderItem = function( ul, item){
   var term = this.term.split(' ').join('|');
@@ -116,12 +121,13 @@ $(document).ready(function(){
 				$( "#for" ).autocomplete({ source: 'autocomplete.php?table=payment&field=for'});
 
 	var lastSel=0;
+	var lastDate=0;
   $("#list").jqGrid({
     url:'payment.php', 
-		cellEdit : false,
-		cellsubmit : 'remote',
-		cellurl: 'action.php',
-		editurl: 'action.php',
+	cellEdit : false,
+	cellsubmit : 'remote',
+	cellurl: 'action.php',
+	editurl: 'action.php',
     datatype: 'xml',
     mtype: 'GET',
     colNames:['ID','Date', 'Amount','Currency', 'Reason', 'Place', 'Notes', 'by', 'for'],
@@ -140,23 +146,32 @@ $(document).ready(function(){
     rowNum:20,
 	height:500,
 	width:600,
-    rowList:[10,20,50],
+    rowList:[10,20,50, 100, 200],
     sortname: 'date',
     sortorder: 'desc',
     caption: 'My expenses',
     viewrecords: true,
-	loadComplete: function(data){
-		if(typeof data == 'undefined')
-        $.each(data.rows,function(i,item){
-            //if(data.rows[i]s>0)
-            {
-//                $("#" + data.rows[i].id).find("td").eq(4).css("color", "red");
-            }
-        });
-      },
-        ondblClickRow: function(id, ri, ci) {
-            // edit the row and save it on press "enter" key
-            $("#list").jqGrid('editRow',id,true);
+	loadComplete: function(){
+		//	coloring rows alternatively to indicate days
+		toggleDate = true;
+		var rowIDs = jQuery("#list").getDataIDs(); 
+		for (var i=0;i<rowIDs.length;i++){ 
+			rowData=jQuery("#list").getRowData(rowIDs[i]);
+			if(rowData.date != lastDate)
+			{
+				toggleDate = ! toggleDate;
+				lastDate = rowData.date;
+			}
+			if(toggleDate){
+				$("#" + rowData.id).removeClass('ui-widget-content');
+				$("#" + rowData.id).addClass('new_date');
+			}
+		}
+    },
+    ondblClickRow: function(id, ri, ci)
+    {
+		// edit the row and save it on press "enter" key
+        $("#list").jqGrid('editRow',id,true);
     },
     onSelectRow: function(id) {
         if (id && id !== lastSel) {
