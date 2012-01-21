@@ -17,6 +17,7 @@
 
 
 <script src="http://js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="http://js/layoutjs/layout.js" type="text/javascript"></script>
 <script src="http://js/jqGrid/jquery.jqGrid.js" type="text/javascript"></script>
 <script src="http://js/jqGrid/plugins/ui.multiselect.js" type="text/javascript"></script>
 <script src="http://js/jqGrid/plugins/jquery.tablednd.js" type="text/javascript"></script>
@@ -138,7 +139,7 @@ function x() {
 		  {name:'id', index:'id', width:55, PrimaryKey:true}, 
 		  {name:'date', index:'date', width:90, editable:true, editoptions:{ dataInit:function (elem) { $(elem).datepicker(); } }}, 
 		  {name:'amount', index:'amount', width:80, align:'right', editable:true}, 
-		  {name:'currency', index:'currency', width:80, align:'right', editable:true, edittype:"select", editoptions:{value:'SGD,MYR'}}, 
+		  {name:'currency', index:'currency', width:80, align:'right', editable:true, edittype:"select", editoptions:{value:"SGD:SGD;MYR:MYR"}}, 
 		  {name:'cause', index:'cause', width:80, align:'right', editable:true}, 
 		  {name:'place', index:'place', width:80, align:'right', editable:true}, 
 		  {name:'note', index:'note', width:150, sortable:false, editable:true},
