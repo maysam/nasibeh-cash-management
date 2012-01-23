@@ -17,7 +17,7 @@
 
 
 <script src="http://js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
-<script src="http://js/layoutjs/layout.js" type="text/javascript"></script>
+<script src="http://js/layout.js/layout.js" type="text/javascript"></script>
 <script src="http://js/jqGrid/jquery.jqGrid.js" type="text/javascript"></script>
 <script src="http://js/jqGrid/plugins/ui.multiselect.js" type="text/javascript"></script>
 <script src="http://js/jqGrid/plugins/jquery.tablednd.js" type="text/javascript"></script>
@@ -124,6 +124,15 @@
 			$( "#by" ).autocomplete({ source: 'autocomplete.php?table=payment&field=by'});
 			$( "#for" ).autocomplete({ source: 'autocomplete.php?table=payment&field=for'});
 	}); 
+	
+var weekday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+	function date_formater  (cellvalue, options, rowObject)
+{
+  // do something here
+   d = new Date(cellvalue);
+   
+   return weekday[d.getDay()];
+}
 function x() {
 	try {
 	  $("#list").jqGrid({
@@ -134,10 +143,11 @@ function x() {
 		editurl: 'action.php',
 		datatype: 'xml',
 		mtype: 'GET',
-		colNames:['ID','Date', 'Amount','Currency', 'Reason', 'Place', 'Notes', 'by', 'for'],
+		colNames:['ID','Day', 'Date', 'Amount','Currency', 'Reason', 'Place', 'Notes', 'by', 'for'],
 		colModel :[ 
 		  {name:'id', index:'id', width:55, PrimaryKey:true}, 
-		  {name:'date', index:'date', width:90, editable:true, editoptions:{ dataInit:function (elem) { $(elem).datepicker(); } }}, 
+		  {name:'wdate', index:'wdate', width:90, editable:false, formatter:date_formater}, 
+		  {name:'date', index:'date', width:110, editable:true, editoptions:{ dataInit:function (elem) { $(elem).datepicker({"dateFormat" : 'yy-mm-dd'}); } }}, 
 		  {name:'amount', index:'amount', width:80, align:'right', editable:true}, 
 		  {name:'currency', index:'currency', width:80, align:'right', editable:true, edittype:"select", editoptions:{value:"SGD:SGD;MYR:MYR"}}, 
 		  {name:'cause', index:'cause', width:80, align:'right', editable:true}, 
@@ -207,5 +217,6 @@ function x() {
   		$(document).ready(function(){
 });
 </script>
+
  </body>
 </html>

@@ -43,6 +43,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
     $s .= "<row id='". $row['id']."'>";            
     $s .= "<cell>". $row['id']."</cell>";
     $s .= "<cell>". $row['date']."</cell>";
+    $s .= "<cell>". $row['date']."</cell>";
     $s .= "<cell>". $row['amount']."</cell>";
     $s .= "<cell>". $row['currency']."</cell>";
     $s .= "<cell>". htmlentities($row['cause'])."</cell>";
