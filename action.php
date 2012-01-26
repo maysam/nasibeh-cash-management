@@ -12,15 +12,16 @@ error_reporting(-1);
 		elseif($oper == 'edit')
 		{
 			foreach($_REQUEST as $key=>$value)
-		//	if($key != 'id' && $key != 'oper')
+			if($key != 'id' && $key != 'oper')
 			{
 				switch($key)
 				{
 					case 'date' :
 					break;
 				}
-				$sql = "update payment set $key='$value' where id=$id limit 1";
+				$sql = "update payment set `$key`='$value' where id=$id limit 1";
 				mysql_query($sql);
+				echo $sql."\r\n";
 				//break;
 			}
 		}
