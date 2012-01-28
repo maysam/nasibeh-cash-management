@@ -9,19 +9,16 @@
 <title>My Expence Grid</title>
 <link rel="icon" type="image/png" href="favicon.ico">
 
-<link rel="stylesheet" type="text/css" href="http://js/jquery-ui/css/jquery-ui.css" />
-<link rel="stylesheet" type="text/css" href="http://js/jqGrid/css/ui.jqgrid.css" />
-
-<script src="http://js/jquery.js" type="text/javascript"></script>
-<script src="http://js/jquery-ui.js" type="text/javascript"></script>
-
-
-<script src="http://js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
-<script src="http://js/layout.js/layout.js" type="text/javascript"></script>
-<script src="http://js/jqGrid/jquery.jqGrid.js" type="text/javascript"></script>
-<script src="http://js/jqGrid/plugins/ui.multiselect.js" type="text/javascript"></script>
-<script src="http://js/jqGrid/plugins/jquery.tablednd.js" type="text/javascript"></script>
-<script src="http://js/jqGrid/plugins/jquery.contextmenu.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="js/jquery-ui/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="js/jqGrid/css/ui.jqgrid.css" />
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="js/jquery-ui.js" type="text/javascript"></script>
+<script src="js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="js/layout.js/layout.js" type="text/javascript"></script>
+<script src="js/jqGrid/jquery.jqGrid.js" type="text/javascript"></script>
+<script src="js/jqGrid/plugins/ui.multiselect.js" type="text/javascript"></script>
+<script src="js/jqGrid/plugins/jquery.tablednd.js" type="text/javascript"></script>
+<script src="js/jqGrid/plugins/jquery.contextmenu.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	$.jgrid.no_legacy_api = true;
