@@ -58,8 +58,16 @@
 	</form>
 </div>
 <button id="add-expense">Add Expense</button>
+<table>
+<tr><td>
 <table id="list"></table> 
 <div id="pager"></div>
+
+</td><td>
+<table id="statlist"></table> 
+<div id="statpager"></div>
+
+</td></tr></table>
 <style>
 .new_date {
     background-color: lightblue !important;
@@ -123,7 +131,7 @@
 	}); 
 	
 var weekday=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
-	function date_formater  (cellvalue, options, rowObject)
+function date_formater  (cellvalue, options, rowObject)
 {
   // do something here
    d = new Date(cellvalue);
@@ -200,18 +208,46 @@ function x() {
 	 }
   }	//	x function
   
-  if ( document.addEventListener ) {
-    document.addEventListener( "DOMContentLoaded", function(){
-			x();
-    }, false );
-} else if ( document.attachEvent ) { // IE        
-    document.attachEvent("onreadystatechange", function(){
-        if ( document.readyState === "complete" ) {
-			x();
-        }
-    });
-}
+function stats() {
+	try {
+	  $("#statlist").jqGrid({
+		url:'stats.php', 
+		datatype: 'xml',
+		mtype: 'GET',
+		colNames:['Year-Month', 'Reason','Total Amount'],
+		colModel :[ 
+		  {name:'date', index:'date', width:110}, 
+		  {name:'reason', index:'reason', width:80}, 
+		  {name:'total', index:'total', width:80, align:'right'}, 
+		],
+		pager: '#statpager',
+		rowNum:200,
+		height:500,
+		width:600,
+		rowList:[10,20,50, 100, 200],
+		sortname: 'total',
+		sortorder: 'desc',
+		caption: 'Stats',
+		viewrecords: true,
+		loadComplete: function(){
+			//	coloring rows alternatively to indicate days
+			var rowIDs = jQuery("#statlist").getDataIDs(); 
+			
+			for (var i=1;i<rowIDs.length;i+=2){ 
+				$("#" + i).removeClass('ui-widget-content');
+				$("#" + i).addClass('new_date');
+			}
+		},
+	  }).jqGrid('navGrid', '#statpager',{edit:false,add:false,del:false}); 
+	 } catch(e) {
+		 setTimeout("stats()",300);
+	 }
+  }	//	y function
+  
+
   		$(document).ready(function(){
+	x();
+	stats();
 });
 </script>
 
