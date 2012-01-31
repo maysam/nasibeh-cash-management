@@ -1,11 +1,21 @@
 <?php 
-include("dbconfig.php");
+require("dbconfig.php");
+if($_GET['table'])
+	$table = $_GET['table'];
+else
+	$table = 'payment';
+
+if($_GET['currency'])
+	$currency = $_GET['currency'];
+else
+	$currency = 'SGD';
+	
 $page = $_GET['page']; 
 $limit = $_GET['rows']; 
 $sidx = $_GET['sidx']; 
 $sord = $_GET['sord']; 
 if(!$sidx) $sidx =1; 
-$result = mysql_query("SELECT COUNT(*) AS count FROM payment"); 
+$result = mysql_query("SELECT COUNT(*) AS count FROM $table where currency = '$currency'"); 
 $row = mysql_fetch_array($result,MYSQL_ASSOC); 
 $count = $row['count']; 
 if( $count > 0 && $limit > 0) { 
@@ -17,7 +27,7 @@ if ($page > $total_pages) $page=$total_pages;
 $start = $limit*$page - $limit;
 if($start <0) $start = 0; 
 
-$SQL = "SELECT * FROM payment"; 
+$SQL = "SELECT * FROM $table where currency = '$currency'"; 
 
 if($sidx && $sord)
 	$SQL .= " ORDER BY $sidx $sord"; 

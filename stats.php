@@ -1,5 +1,18 @@
 <?php 
 include("dbconfig.php");
+if($_GET['table'])
+	$table = $_GET['table'];
+else
+	$table = 'payment';
+if($_GET['currency'])
+	$currency = $_GET['currency'];
+else
+	$currency = 'SGD';
+if($_GET['monthly'])
+	$monthly = true;
+else
+	$monthly = false;
+
 $page = $_GET['page']; 
 $limit = $_GET['rows']; 
 $sidx = $_GET['sidx']; 
@@ -18,7 +31,10 @@ if ($page > $total_pages) $page=$total_pages;
 $start = $limit*$page - $limit;
 if($start <0) $start = 0; 
 */
-$SQL = "SELECT concat(year(date) , '-' , month(date)) `date`, concat(cause,' (',count(cause),'x)') reason, sum(amount) `total` , currency FROM payment group by cause, year(date), month(date), currency"; 
+if($monthly)
+	$SQL = "SELECT concat(year(date) , '-' , month(date)) `date`, concat(cause,' (',count(cause),'x)') reason, sum(amount) `total` FROM $table where currency = '$currency' group by cause, year(date), month(date)"; 
+else
+	$SQL = "SELECT year(date) `date`, concat(cause,' (',count(cause),'x)') reason, sum(amount) `total` FROM $table where currency = '$currency' group by cause, year(date)"; 
 
 if($sidx && $sord)
 	$SQL .= " ORDER BY $sidx $sord"; 
@@ -47,7 +63,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
     $s .= "<row id='". ++$i."'>";            
     $s .= "<cell>". $row['date']."</cell>";
     $s .= "<cell>". htmlentities($row['reason'])."</cell>";
-    $s .= "<cell>". $row['total']."</cell>";
+    $s .= "<cell>". $row['total']." $currency</cell>";
     $s .= "</row>";
 
 }

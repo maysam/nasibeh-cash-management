@@ -57,8 +57,24 @@
 	</fieldset>
 	</form>
 </div>
-<button id="add-expense">Add Expense</button>
 <table>
+<tr><td>
+<button id="add-expense">Add Expense</button>
+</td>
+<td align=right>
+<select id="choose-currency">
+	<option value=SGD>SGD</option>
+	<option value=MYR>MYR</option>
+	<option value=IRR>Rial</option>
+</select>
+<select id="choose-table">
+	<option value=payment>2012</option>
+	<option value=payment_2011>2011</option>
+</select>
+<input type=checkbox id="monthly" checked>Monthly</checkbox>
+</td>
+</td></tr>
+
 <tr><td>
 <table id="list"></table> 
 <div id="pager"></div>
@@ -98,14 +114,14 @@
 				modal: true,
 				buttons: {
 					"Add Expense": function() {
-				$.post('add.php?add=true', $( "#expense-form-html" ).serialize(), function(data) {
+						$.post('add.php?add=true', $( "#expense-form-html" ).serialize(), function(data) {
 							$( "#amount" ).val('');
 							$( "#cause" ).val('');
 							$( "#place" ).val('');
 							$( "#note" ).val('');
 							$( "#expense-form" ).dialog( "close" );
-					$("#list").trigger("reloadGrid");
-			  });
+							$("#list").trigger("reloadGrid");
+						});
 					},
 					Cancel: function() {
 						$( this ).dialog( "close" );
@@ -120,6 +136,8 @@
 				.click(function() {
 					$( "#expense-form" ).dialog( "open" );
 				});
+	
+			
 			$( "#datepicker" ).datepicker( {"dateFormat" : 'yy-mm-dd'} );
 			$( "#amount" ).autocomplete({source: 'autocomplete.php?table=payment&field=amount'});
 			$( "#cause" ).autocomplete({ source: 'autocomplete.php?table=payment&field=cause'});
@@ -138,10 +156,10 @@ function date_formater  (cellvalue, options, rowObject)
    
    return weekday[d.getDay()];
 }
-function x() {
+function list() {
 	try {
 	  $("#list").jqGrid({
-		url:'payment.php', 
+		url:'list.php',
 		cellEdit : false,
 		cellsubmit : 'remote',
 		cellurl: 'action.php',
@@ -168,7 +186,7 @@ function x() {
 		rowList:[10,20,50, 100, 200],
 		sortname: 'date',
 		sortorder: 'desc',
-		caption: 'My expenses',
+		caption: 'Expenses',
 		viewrecords: true,
 		loadComplete: function(){
 			//	coloring rows alternatively to indicate days
@@ -204,14 +222,15 @@ function x() {
 		},
 	  }).jqGrid('navGrid', '#pager',{edit:true,add:false,del:true}); 
 	 } catch(e) {
-		 setTimeout("x()",300);
+		 console.log('loading list again: ' + e);
+		 setTimeout("list()",300);
 	 }
   }	//	x function
   
 function stats() {
 	try {
 	  $("#statlist").jqGrid({
-		url:'stats.php', 
+		url:'stats.php',  
 		datatype: 'xml',
 		mtype: 'GET',
 		colNames:['Year-Month', 'Reason','Total Amount'],
@@ -239,16 +258,35 @@ function stats() {
 			}
 		},
 	  }).jqGrid('navGrid', '#statpager',{edit:false,add:false,del:false}); 
+
+//			$( "#choose-table" ).click( update_lists());
+//			$( "#choose-currency" ).click( update_lists());
+	
 	 } catch(e) {
+		 console.log('loading stats again: ' + e);
 		 setTimeout("stats()",300);
 	 }
   }	//	y function
-  
+  	$(document).ready(function(){
+		list();
+		stats();
+		function reload() {
+		}
+		$("select").click(function() {
+			var param = '?table=' + $("#choose-table").val() + '&currency=' + $("#choose-currency").val();
+			if($('#monthly').is(':checked'))
+				param = param + '&monthly=true';
+			$("#list").setGridParam({url : 'list.php' + param }).trigger("reloadGrid");
+			$("#statlist").setGridParam({url : 'stats.php'+param }).trigger("reloadGrid");
+		});
 
-  		$(document).ready(function(){
-	x();
-	stats();
-});
+		$("#monthly").click(function() {
+			var param = '?table=' + $("#choose-table").val() + '&currency=' + $("#choose-currency").val();
+			if($('#monthly').is(':checked'))
+				param = param + '&monthly=true';
+			$("#statlist").setGridParam({url : 'stats.php'+param }).trigger("reloadGrid");
+		});
+	});
 </script>
 
  </body>
