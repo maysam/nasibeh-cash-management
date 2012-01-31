@@ -71,7 +71,7 @@
 	<option value=payment>2012</option>
 	<option value=payment_2011>2011</option>
 </select>
-<input type=checkbox id="monthly" checked>Monthly</checkbox>
+<input type=checkbox id="monthly">Monthly</checkbox>
 </td>
 </td></tr>
 
